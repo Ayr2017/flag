@@ -4,15 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Models\Movie;
-// use App\Models\MovieGenre;
 use App\Services\MovieService;
-// use App\Services\MovieStorage;
-// use Illuminate\Database\Eloquent\ModelNotFoundException;
-// use Illuminate\Http\Response;
-// use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Log;
-// use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {

@@ -8,5 +8,8 @@
 </p>
 
 ## Commands
+php artisan migrate
+
+php artisan db:seed --class=GenresSeeder
 
 

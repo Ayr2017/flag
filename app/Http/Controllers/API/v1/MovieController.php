@@ -26,17 +26,18 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $result = MovieService::storeMovie($request);
-        if(!$result) return response('Created successfully', 200)->header('Content-Type', 'text/plain');
+        if(!$result) return response('Created successfully', 201)->header('Content-Type', 'text/plain');
     }
 
     public function destroy($id)
     {
-        return MovieService::destroyMovie($id);
+        $result =  MovieService::destroyMovie($id);
+        if($result) return response('Deleted successfully', 200)->header('Content-Type', 'text/plain');
     }
 
     public function update(Request $request)
     {
         $result =  MovieService::updateMovie($request);
-        if($result) return response('Updated successfully', 201)->header('Content-Type', 'text/plain');
+        if($result) return response('Updated successfully', 200)->header('Content-Type', 'text/plain');
     }
 }

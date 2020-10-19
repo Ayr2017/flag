@@ -68,7 +68,7 @@ class MovieService {
         $resultDelete = MovieStorage::deleteMovieImg($movieImgPath);
         if(! $resultDelete) return response('Error', 202)->header('Content-Type', 'text/plain');
         $result = $movie->delete();
-        if($result) return response('Deleted successfully', 200)->header('Content-Type', 'text/plain');
+        return $result;
     }
 
     public static function updateMovie($request)

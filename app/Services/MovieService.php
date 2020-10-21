@@ -128,13 +128,14 @@ class MovieService {
         ]);
     
             $movie = Movie::find($request->id);
+            $file = File::where('movie_id', $request->id)->first();
+            
             if($request->file('img')){
-                $movieImgPath = $movie->img;
+                $movieImgPath = $file->name;
                 $resultDelete = MovieStorage::deleteMovieImg($movieImgPath);
                 $path = MovieStorage::storeMovieImg($request->file('img'));
-                $imgURL = static::prepareImgPublicURL($path);  
-                $movie->img=$path;
-                $movie->imgURL=$imgURL;
+                $imgURL = static::prepareImgPublicURL($path); 
+                $fileUpdateResult = FileService::update($file, $path, $imgURL);
             }
             $movie->name = $request->name;
             $movie->description=$request->description;

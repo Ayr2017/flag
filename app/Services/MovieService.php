@@ -37,10 +37,10 @@ class MovieService {
 
     public static function getMoviesByGenre($id)
     {
-        $movie = Movie::whereHas('genres', function($genre) use ($id) {
+        $movies = Movie::whereHas('genres', function($genre) use ($id) {
             $genre->where('genres.id', $id);
         })->with('genres:genres.id,genres.name')->get();
-        return $movie;
+        return $movies;
     }
 
     public static function storeMovie(Request $request)

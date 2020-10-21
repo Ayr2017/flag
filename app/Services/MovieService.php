@@ -2,14 +2,18 @@
 namespace App\Services;
 use App\Models\Movie;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class MovieService {
+    const DEFAULT_ORDER_BY = 'id';
+    const DEFAULT_SORT_DIR = 'desc';
+    const DEFAULT_AMOUNT = 'id';
 
-    public static function getMovies($request)
+    public static function getMovies(Request $request)
     {
 
         $request->validate([
@@ -18,9 +22,9 @@ class MovieService {
             'amount' => 'nullable|integer',
         ]);
 
-        $orderBy = $request->orderBy ?? 'id';
-        $sortDir = $request->sortDir ?? 'desc';
-        $amount  = $request->amount ?? 10 ;
+        $orderBy = $request->orderBy ?? self::DEFAULT_ORDER_BY;
+        $sortDir = $request->sortDir ?? self::DEFAULT_SORT_DIR;
+        $amount  = $request->amount ?? self::DEFAULT_AMOUNT;
         
         $movies = Movie::with('genres:genres.id,genres.name')->orderBy($orderBy, $sortDir)->paginate($amount);
         return $movies;
@@ -39,7 +43,7 @@ class MovieService {
         return $movie;
     }
 
-    public static function storeMovie($request)
+    public static function storeMovie(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
@@ -71,7 +75,7 @@ class MovieService {
         return $result;
     }
 
-    public static function updateMovie($request)
+    public static function updateMovie(Request $request)
     {
         $request->validate([
             'id' => 'required|integer',

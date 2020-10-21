@@ -24,11 +24,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('movies')->group(function()
 {
-    Route::get('/',[MovieController::class,'getMovies']);
-    Route::get('/{id}',[MovieController::class,'getMovieById'])->where('id','[0-9]+');
-    Route::get('/genre/{id}',[MovieController::class,'getMoviesByGenre'])->where('id','[0-9]+');
+    Route::get('/',[MovieController::class,'index']);
+    Route::get('/{movie}',[MovieController::class,'show'])->where('movie','[0-9]+');
+    Route::get('/genre/{genre}',[MovieController::class,'getMoviesByGenre'])->where('genre','[0-9]+');
     Route::post('/',[MovieController::class,'store']);
-    Route::delete('/{id}',[MovieController::class,'destroy'])->where('id','[0-9]+');
+    Route::delete('/{movie}',[MovieController::class,'destroy'])->where('movie','[0-9]+');
     Route::patch('/',[MovieController::class,'update']);
 });
 

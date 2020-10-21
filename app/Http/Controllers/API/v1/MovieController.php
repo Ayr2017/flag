@@ -3,41 +3,43 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Movie;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Services\MovieService;
 
 class MovieController extends Controller
 {
-    public function getMovies(Request $request)
+    public function index(Request $request)
     {
         return MovieService::getMovies($request);
     }
 
-    public function getMovieById($id)
+    public function show(Movie $movie)
     {
-        return MovieService::getMovieById($id);
+        return MovieService::getMovieById($movie->id);
     }
 
-    public function getMoviesByGenre($id)
+    public function getMoviesByGenre(Genre $genre)
     {
-        return MovieService::getMoviesByGenre($id);
+        return MovieService::getMoviesByGenre($genre->id);
     }
 
     public function store(Request $request)
     {
         $result = MovieService::storeMovie($request);
-        if(!$result) return response('Created successfully', 201)->header('Content-Type', 'text/plain');
+        if(!$result) return response()->json(['Message'=>'Created successfully'], 201);
     }
 
-    public function destroy($id)
+    public function destroy(Movie $movie)
     {
-        $result =  MovieService::destroyMovie($id);
-        if($result) return response('Deleted successfully', 200)->header('Content-Type', 'text/plain');
+        $result =  MovieService::destroyMovie($movie->id);
+        if($result) return response()->json(['Message'=>'Deleted successfully'], 200);
     }
 
     public function update(Request $request)
     {
         $result =  MovieService::updateMovie($request);
-        if($result) return response('Updated successfully', 200)->header('Content-Type', 'text/plain');
+        if($result) return response()->json(['Message'=>'Updated successfully'], 200);
     }
 }

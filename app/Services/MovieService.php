@@ -29,13 +29,13 @@ class MovieService {
         $movies = Movie::with('genres:genres.id,genres.name')->orderBy($orderBy, $sortDir)->paginate($amount);
         return $movies;
     }
-    public static function getMovieById($id)
+    public static function getMovieById(int $id)
     {
-        $movie = Movie::with('genres:genres.id,genres.name')->find( $id);
+        $movie = Movie::with('genres:genres.id,genres.name')->find($id);
         return $movie;
     }
 
-    public static function getMoviesByGenre($id)
+    public static function getMoviesByGenre(int $id)
     {
         $movies = Movie::whereHas('genres', function($genre) use ($id) {
             $genre->where('genres.id', $id);
@@ -64,13 +64,13 @@ class MovieService {
         return $movieResult;
     }
 
-    public static function destroyMovie($id)
+    public static function destroyMovie(int $id)
     {
 
         $movie = Movie::find($id);
         $movieImgPath = $movie->img;
         $resultDelete = MovieStorage::deleteMovieImg($movieImgPath);
-        if(! $resultDelete) return response('Error', 202)->header('Content-Type', 'text/plain');
+        if(! $resultDelete) return response()->json(['Error message'=>'Failed to delete file'],202);
         $result = $movie->delete();
         return $result;
     }
@@ -105,7 +105,7 @@ class MovieService {
     }
 
     
-    public static function prepareImgPublicURL($filePath)
+    public static function prepareImgPublicURL(string $filePath)
     {
         $imgURL = Str::replaceFirst('public','storage', $filePath);
         $host = request()->getHttpHost();

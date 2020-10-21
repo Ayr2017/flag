@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\File;
+
 
 
 class FileService {
@@ -14,7 +16,7 @@ class FileService {
      * @param  string $imgURL
      * @return bool
      */
-    public static function store($file, $movie_id, $path, $imgURL):bool
+    public static function store(File $file, int $movie_id, string $path, string $imgURL):bool
     {
         $file->movie_id = $movie_id; 
         $file->name = $path;
@@ -22,8 +24,16 @@ class FileService {
         $result = $file->save();
         return $result;
     }
-
-    public static function update($file, $path, $imgURL):bool
+    
+    /**
+     * update
+     *
+     * @param  object $file
+     * @param  string $path
+     * @param  string $imgURL
+     * @return bool
+     */
+    public static function update(File $file, string $path, string $imgURL):bool
     {
         $file->name = $path;
         $file->publicURL = $imgURL; 

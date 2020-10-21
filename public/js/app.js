@@ -2201,7 +2201,7 @@ __webpack_require__.r(__webpack_exports__);
     this.getAllGenres();
   },
   mounted: function mounted() {
-    this.getMovieById(20);
+    this.getMovieById(1);
   }
 });
 

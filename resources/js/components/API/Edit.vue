@@ -144,7 +144,7 @@ export default {
     this.getAllGenres();
   },
   mounted() {
-    this.getMovieById(20);
+    this.getMovieById(1);
   },
 };
 </script>

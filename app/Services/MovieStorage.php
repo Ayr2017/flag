@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Storage;
 
 class MovieStorage {
 
-    public static function storeMovieImg($file)
+    public static function storeMovieImg($file):string
     {
         $path =  $file->store('public/movies');
         return $path;
     }
 
-    public static function deleteMovieImg($filePath)
+    public static function deleteMovieImg(string $filePath)
     {
         return Storage::delete($filePath);
     }

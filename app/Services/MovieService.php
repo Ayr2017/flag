@@ -12,8 +12,14 @@ class MovieService {
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_SORT_DIR = 'desc';
     const DEFAULT_AMOUNT = 'id';
-
-    public static function getMovies(Request $request)
+    
+    /**
+     * getMovies
+     *
+     * @param  Requesy $request
+     * @return object
+     */
+    public static function getMovies(Request $request) :object
     {
 
         $request->validate([
@@ -28,21 +34,39 @@ class MovieService {
         
         $movies = Movie::with('genres:genres.id,genres.name')->orderBy($orderBy, $sortDir)->paginate($amount);
         return $movies;
-    }
-    public static function getMovieById(int $id)
+    } 
+      
+    /**
+     * getMovieById
+     *
+     * @param  int $id
+     * @return object
+     */
+    public static function getMovieById(int $id):object
     {
         $movie = Movie::with('genres:genres.id,genres.name')->find($id);
         return $movie;
     }
-
-    public static function getMoviesByGenre(int $id)
+    
+    /**
+     * getMoviesByGenre
+     *
+     * @param  int $id
+     * @return object
+     */
+    public static function getMoviesByGenre(int $id):object
     {
         $movies = Movie::whereHas('genres', function($genre) use ($id) {
             $genre->where('genres.id', $id);
         })->with('genres:genres.id,genres.name')->get();
         return $movies;
     }
-
+    
+    /**
+     * storeMovie
+     *
+     * @param  int $request
+     */
     public static function storeMovie(Request $request)
     {
         $request->validate([
@@ -63,8 +87,14 @@ class MovieService {
         ])->genres()->attach(json_decode($request->genres));
         return $movieResult;
     }
-
-    public static function destroyMovie(int $id)
+    
+    /**
+     * destroyMovie
+     *
+     * @param  int $id
+     * @return bool
+     */
+    public static function destroyMovie(int $id):bool
     {
 
         $movie = Movie::find($id);
@@ -74,7 +104,12 @@ class MovieService {
         $result = $movie->delete();
         return $result;
     }
-
+    
+    /**
+     * updateMovie
+     *
+     * @param  Request $request
+     */
     public static function updateMovie(Request $request)
     {
         $request->validate([
@@ -102,10 +137,17 @@ class MovieService {
                 $movie->save();
                 $movie->genres()->sync(json_decode($request->genres));
             }, 2);
+            return true;
     }
 
-    
-    public static function prepareImgPublicURL(string $filePath)
+        
+    /**
+     * prepareImgPublicURL
+     *
+     * @param  string $filePath
+     * @return string
+     */
+    public static function prepareImgPublicURL(string $filePath):string
     {
         $imgURL = Str::replaceFirst('public','storage', $filePath);
         $host = request()->getHttpHost();

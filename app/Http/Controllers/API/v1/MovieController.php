@@ -9,35 +9,72 @@ use Illuminate\Http\Request;
 use App\Services\MovieService;
 
 class MovieController extends Controller
-{
-    public function index(Request $request)
+{        
+    /**
+     * index
+     *
+     * @param  Request $request
+     * @return object
+     */
+    public function index(Request $request):object
     {
         return MovieService::getMovies($request);
     }
-
-    public function show(Movie $movie)
+    
+    /**
+     * show
+     *
+     * @param  Movie $movie
+     * @return object
+     */
+    public function show(Movie $movie):object
     {
         return MovieService::getMovieById($movie->id);
     }
-
-    public function getMoviesByGenre(Genre $genre)
+    
+    /**
+     * getMoviesByGenre
+     *
+     * @param  Genre $genre
+     * @return object
+     */
+    public function getMoviesByGenre(Genre $genre):object
     {
         return MovieService::getMoviesByGenre($genre->id);
     }
-
-    public function store(Request $request)
+    
+    /**
+     * store
+     *
+     * @param  Request $request
+     * @return object
+     */
+    public function store(Request $request):object
     {
         $result = MovieService::storeMovie($request);
         if(!$result) return response()->json(['Message'=>'Created successfully'], 201);
     }
-
-    public function destroy(Movie $movie)
+    
+    /**
+     * destroy
+     *
+     * @param  Movie $movie
+     * @return object
+     */
+    public function destroy(Movie $movie):object
     {
         $result =  MovieService::destroyMovie($movie->id);
         if($result) return response()->json(['Message'=>'Deleted successfully'], 200);
     }
-
-    public function update(Request $request)
+    
+        
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @return object
+     */
+    public function update(Request $request):object
     {
         $result =  MovieService::updateMovie($request);
         if($result) return response()->json(['Message'=>'Updated successfully'], 200);

@@ -10,4 +10,5 @@ class MovieGenre extends Model
     use HasFactory;
     protected $table="genre_movie";
     protected $fillable = ["movie_id", "genre_id"];
+    protected $primaryKey = ['movie_id', 'genre_id'];
 }

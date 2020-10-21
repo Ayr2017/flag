@@ -2189,7 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.name = data.name;
         _this2.description = data.description;
         _this2.released_at = data.released_at;
-        _this2.imgURL = data.imgURL;
+        _this2.imgURL = data.files.publicURL;
         _this2.genres = data.genres.map(function (element) {
           return element.id;
         });

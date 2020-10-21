@@ -131,7 +131,7 @@ export default {
         this.name = data.name;
         this.description = data.description;
         this.released_at = data.released_at;
-        this.imgURL = data.imgURL;
+        this.imgURL = data.files.publicURL;
         this.genres = data.genres.map(function (element) {
           return element.id;
         });

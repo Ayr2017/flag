@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class MovieService {
     const DEFAULT_ORDER_BY = 'id';
     const DEFAULT_SORT_DIR = 'desc';
-    const DEFAULT_AMOUNT = 'id';
+    const DEFAULT_AMOUNT = '10';
     
     /**
      * getMovies

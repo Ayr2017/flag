@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use App\Models\Genre;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class MovieController extends Controller
      */
     public function index(Request $request):object
     {
-        return MovieService::getMovies($request);
+        return new MovieResource(MovieService::getMovies($request));
     }
     
     /**

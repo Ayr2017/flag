@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Models\Movie;
+use App\Models\File;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,7 @@ class MovieService {
         $sortDir = $request->sortDir ?? self::DEFAULT_SORT_DIR;
         $amount  = $request->amount ?? self::DEFAULT_AMOUNT;
         
-        $movies = Movie::with('genres:genres.id,genres.name')->orderBy($orderBy, $sortDir)->paginate($amount);
+        $movies = Movie::with(['genres:genres.id,genres.name','files'])->orderBy($orderBy, $sortDir)->paginate($amount);
         return $movies;
     } 
       
@@ -44,7 +45,7 @@ class MovieService {
      */
     public static function getMovieById(int $id):object
     {
-        $movie = Movie::with('genres:genres.id,genres.name')->find($id);
+        $movie = Movie::with(['genres:genres.id,genres.name','files'])->find($id);
         return $movie;
     }
     
@@ -58,7 +59,7 @@ class MovieService {
     {
         $movies = Movie::whereHas('genres', function($genre) use ($id) {
             $genre->where('genres.id', $id);
-        })->with('genres:genres.id,genres.name')->get();
+        })->with(['genres:genres.id,genres.name','files'])->get();
         return $movies;
     }
     
@@ -78,14 +79,19 @@ class MovieService {
         ]);
         $path = MovieStorage::storeMovieImg($request->file('img'));
         $imgURL = static::prepareImgPublicURL($path);
-        $movieResult = Movie::create([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'released_at'=>$request->released_at,
-            'img'=>$path,
-            'imgURL'=>$imgURL,
-        ])->genres()->attach(json_decode($request->genres));
-        return $movieResult;
+
+        $movie = new Movie();
+        $movie->name = $request->name;
+        $movie->description = $request->description;
+        $movie->released_at = $request->released_at;
+        $movie->save();
+        $movie_id = $movie->id;
+
+        $fileServiseResult = FileService::store(new File(),$movie_id, $path, $imgURL);
+        $movieResult = $movie->genres()->attach(json_decode($request->genres));
+
+        if($fileServiseResult && $movieResult) return true;
+        else return false;
     }
     
     /**
@@ -98,7 +104,8 @@ class MovieService {
     {
 
         $movie = Movie::find($id);
-        $movieImgPath = $movie->img;
+        $file = File::where('movie_id',$id)->first();
+        $movieImgPath = $file->name;
         $resultDelete = MovieStorage::deleteMovieImg($movieImgPath);
         if(! $resultDelete) return response()->json(['Error message'=>'Failed to delete file'],202);
         $result = $movie->delete();

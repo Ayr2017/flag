@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\MovieStorageProvider::class,
         App\Providers\MovieServiceProvider::class,
+        App\Providers\FileServiceProvider::class,
 
     ],
 
@@ -229,7 +230,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Moviestorage'   =>  App\Services\MovieStorageFacade::class,
-        'Movieservice'   =>  App\Services\MovieServiceFacade::class
+        'Movieservice'   =>  App\Services\MovieServiceFacade::class,
+        'Fileservice'   =>  App\Services\FileserviceFacade::class
 
     ],
 
